@@ -18,11 +18,21 @@ function App() {
     getAllBlogs();
   }, []);
 
+  useEffect(() => {
+    const userString = window.localStorage.getItem('loggedUser');
+    if (userString) {
+      const parsedUser = JSON.parse(userString);
+      setUser(parsedUser);
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       const user = await loginService.login({ username, password });
+
+      window.localStorage.setItem('loggedUser', JSON.stringify(user));
       setUser(user);
       setUsername('');
       setPassword('');
