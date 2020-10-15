@@ -30,6 +30,7 @@ function App() {
     const userString = window.localStorage.getItem('loggedUser');
     if (userString) {
       const parsedUser = JSON.parse(userString);
+      blogService.setToken(parsedUser.token);
       setUser(parsedUser);
     }
   }, []);
