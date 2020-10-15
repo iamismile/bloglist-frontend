@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
+import Notification from './components/Notification';
 import blogService from './services/blog';
 import loginService from './services/login';
 
@@ -11,6 +12,10 @@ function App() {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const [notification, setNotification] = useState({
+    error: null,
+    success: null,
+  });
 
   useEffect(() => {
     const getAllBlogs = async () => {
@@ -41,7 +46,10 @@ function App() {
       setUsername('');
       setPassword('');
     } catch (error) {
-      console.error(error);
+      setNotification({ ...notification, error: 'Wrong Credentials' });
+      setTimeout(() => {
+        setNotification({ error: null, success: null });
+      }, 5000);
     }
   };
 
@@ -62,12 +70,27 @@ function App() {
       };
 
       const newBlog = await blogService.create(blogObject);
+
+      setNotification({
+        ...notification,
+        success: `A new blog "${newBlog.title}" by ${newBlog.author} added`,
+      });
+      setTimeout(() => {
+        setNotification({ error: null, success: null });
+      }, 5000);
+
       setBlogs(blogs.concat(newBlog));
       setTitle('');
       setAuthor('');
       setUrl('');
     } catch (error) {
-      console.error(error);
+      setNotification({
+        ...notification,
+        error: error.message,
+      });
+      setTimeout(() => {
+        setNotification({ error: null, success: null });
+      }, 5000);
     }
   };
 
@@ -75,6 +98,9 @@ function App() {
     return (
       <div>
         <h2>Login to Application</h2>
+
+        <Notification message={notification} />
+
         <form onSubmit={handleLogin}>
           <div>
             username{' '}
@@ -103,6 +129,8 @@ function App() {
   return (
     <div>
       <h2>Blogs</h2>
+
+      <Notification message={notification} />
 
       <p>
         {user.name} is logged-in <button onClick={handleLogout}>Logout</button>
