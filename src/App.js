@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import Blog from './components/Blog';
 import Notification from './components/Notification';
+import LoginForm from './components/LoginForm';
+
 import blogService from './services/blog';
 import loginService from './services/login';
 
 function App() {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -35,17 +36,13 @@ function App() {
     }
   }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const getLogin = async (credentials) => {
     try {
-      const user = await loginService.login({ username, password });
+      const user = await loginService.login(credentials);
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setUsername('');
-      setPassword('');
     } catch (error) {
       setNotification({ ...notification, error: 'Wrong Credentials' });
       setTimeout(() => {
@@ -102,27 +99,7 @@ function App() {
 
         <Notification message={notification} />
 
-        <form onSubmit={handleLogin}>
-          <div>
-            username{' '}
-            <input
-              type="text"
-              name="Username"
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password{' '}
-            <input
-              type="password"
-              name="Password"
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
+        <LoginForm getLogin={getLogin} />
       </div>
     );
   }
