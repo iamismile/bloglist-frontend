@@ -4,6 +4,7 @@ import Blog from './components/Blog';
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
+import Togglable from './components/Togglable';
 
 import blogService from './services/blog';
 import loginService from './services/login';
@@ -15,7 +16,6 @@ function App() {
     error: null,
     success: null,
   });
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const getAllBlogs = async () => {
@@ -80,24 +80,6 @@ function App() {
     }
   };
 
-  const blogForm = () => {
-    const showWhenVisible = { display: visible ? '' : 'none' };
-    const hideWhenVisible = { display: visible ? 'none' : '' };
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setVisible(true)}>New Blog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <h2>Create New</h2>
-          <BlogForm createBlog={addBlog} />
-          <button onClick={() => setVisible(false)}>Cancel</button>
-        </div>
-      </div>
-    );
-  };
-
   if (user === null) {
     return (
       <div>
@@ -120,7 +102,10 @@ function App() {
         {user.name} is logged-in <button onClick={handleLogout}>Logout</button>
       </p>
 
-      {blogForm()}
+      <Togglable buttonLabel="New Blog">
+        <h2>Create New</h2>
+        <BlogForm createBlog={addBlog} />
+      </Togglable>
 
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
