@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Blog from './components/Blog';
 import Notification from './components/Notification';
@@ -16,6 +16,8 @@ function App() {
     error: null,
     success: null,
   });
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const getAllBlogs = async () => {
@@ -68,6 +70,7 @@ function App() {
         setNotification({ error: null, success: null });
       }, 5000);
 
+      blogFormRef.current.toggleVisibility();
       setBlogs(blogs.concat(newBlog));
     } catch (error) {
       setNotification({
@@ -102,7 +105,7 @@ function App() {
         {user.name} is logged-in <button onClick={handleLogout}>Logout</button>
       </p>
 
-      <Togglable buttonLabel="New Blog">
+      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <h2>Create New</h2>
         <BlogForm createBlog={addBlog} />
       </Togglable>
