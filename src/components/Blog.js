@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Blog({ blog }) {
+function Blog({ blog, addLike }) {
   const [visible, setVisible] = useState(false);
 
   const showWhenVisible = { display: visible ? '' : 'none' };
@@ -8,6 +8,18 @@ function Blog({ blog }) {
 
   const toggleVisibility = () => {
     setVisible(!visible);
+  };
+
+  const handleLikes = (blogObject) => {
+    const { id, title, author, url, likes } = blogObject;
+    const newBlog = {
+      title,
+      author,
+      url,
+      likes: likes + 1,
+    };
+
+    addLike(id, newBlog);
   };
 
   const blogStyle = {
@@ -26,7 +38,8 @@ function Blog({ blog }) {
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>
-          Likes {blog.likes} <button>like</button>
+          Likes {blog.likes}{' '}
+          <button onClick={() => handleLikes(blog)}>like</button>
         </p>
         <p>{blog.author}</p>
       </div>
