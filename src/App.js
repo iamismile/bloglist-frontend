@@ -90,6 +90,19 @@ function App() {
     );
   };
 
+  // Sort blog posts by the number of likes
+  const sortedBlogs = blogs.sort((a, b) => {
+    if (a.likes < b.likes) {
+      return 1;
+    }
+
+    if (a.likes > b.likes) {
+      return -1;
+    }
+
+    return 0;
+  });
+
   if (user === null) {
     return (
       <div>
@@ -117,7 +130,7 @@ function App() {
         <BlogForm createBlog={addBlog} />
       </Togglable>
 
-      {blogs.map((blog) => (
+      {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} addLike={addLike} />
       ))}
     </div>
