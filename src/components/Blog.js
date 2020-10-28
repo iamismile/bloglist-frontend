@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Blog({ blog, addLike }) {
+function Blog({ blog, addLike, removeBlog }) {
   const [visible, setVisible] = useState(false);
 
   const showWhenVisible = { display: visible ? '' : 'none' };
@@ -22,12 +22,26 @@ function Blog({ blog, addLike }) {
     addLike(id, newBlog);
   };
 
+  const handleRemove = () => {
+    console.log('Removing blog');
+    removeBlog();
+  };
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 5,
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
+  };
+
+  const removeButtonStyle = {
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: 'tomato',
+    border: '2px solid black',
+    borderRadius: 4,
+    outline: 'none',
   };
 
   return (
@@ -42,6 +56,9 @@ function Blog({ blog, addLike }) {
           <button onClick={() => handleLikes(blog)}>like</button>
         </p>
         <p>{blog.author}</p>
+        <button style={removeButtonStyle} onClick={handleRemove}>
+          Remove
+        </button>
       </div>
     </div>
   );

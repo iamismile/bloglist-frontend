@@ -90,6 +90,24 @@ function App() {
     );
   };
 
+  const removeBlog = async (blog) => {
+    const confirmation = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}`
+    );
+
+    if (confirmation) {
+      try {
+        await blogService.deleteBlog(blog.id);
+        setBlogs(blogs.filter((b) => b.id !== blog.id));
+      } catch (error) {
+        setNotification({ ...notification, error: error.message });
+        setTimeout(() => {
+          setNotification({ error: null, success: null });
+        }, 5000);
+      }
+    }
+  };
+
   // Sort blog posts by the number of likes
   const sortedBlogs = blogs.sort((a, b) => {
     if (a.likes < b.likes) {
@@ -131,7 +149,12 @@ function App() {
       </Togglable>
 
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} addLike={addLike} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addLike={addLike}
+          removeBlog={() => removeBlog(blog)}
+        />
       ))}
     </div>
   );
