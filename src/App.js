@@ -154,6 +154,7 @@ function App() {
           blog={blog}
           addLike={addLike}
           removeBlog={() => removeBlog(blog)}
+          user={user}
         />
       ))}
     </div>
