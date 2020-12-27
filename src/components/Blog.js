@@ -50,11 +50,14 @@ function Blog({ blog, addLike, removeBlog, user }) {
   return (
     <div style={blogStyle}>
       <h4>
-        {blog.title} <button onClick={toggleVisibility}>{buttonText}</button>
+        {blog.title}{' '}
+        <button className="toggleVisibilityBtn" onClick={toggleVisibility}>
+          {buttonText}
+        </button>
       </h4>
-      <div style={showWhenVisible}>
-        <p>{blog.url}</p>
-        <p>
+      <div style={showWhenVisible} className="blogInfo">
+        <p className="url">{blog.url}</p>
+        <p className="likes">
           Likes {blog.likes}{' '}
           <button onClick={() => handleLikes(blog)}>like</button>
         </p>
