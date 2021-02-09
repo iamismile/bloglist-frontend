@@ -6,7 +6,15 @@ function Blog({ blog, addLike, removeBlog, user }) {
 
   const showWhenVisible = { display: visible ? '' : 'none' };
   const buttonText = visible ? 'Hide' : 'View';
-  const hideRemoveButton = user.username !== blog.user.username ? 'none' : '';
+  // const hideRemoveButton = user.username !== blog.user.username ? 'none' : '';
+  const hideRemoveButton = () => {
+    if (!user || !blog.user) {
+      return 'none';
+    } else if (user.username === blog.user.username) {
+      return '';
+    }
+    return 'none';
+  };
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -44,7 +52,7 @@ function Blog({ blog, addLike, removeBlog, user }) {
     border: '2px solid black',
     borderRadius: 4,
     outline: 'none',
-    display: hideRemoveButton,
+    display: hideRemoveButton(),
   };
 
   return (
