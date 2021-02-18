@@ -32,4 +32,35 @@ describe('Blog app', function () {
       cy.get('.error').should('contain', 'Wrong Credentials');
     });
   });
+
+  describe.only('When logged in', function () {
+    beforeEach(function () {
+      // cy.get('#username').type('iamismile');
+      // cy.get('#password').type('sekret');
+      // cy.get('#login-button').click();
+      // cy.contains('Ismile Hossain is logged-in');
+
+      // cy.request('POST', 'http://localhost:3003/api/login', {
+      //   username: 'iamismile',
+      //   password: 'sekret',
+      // }).then((response) => {
+      //   localStorage.setItem('loggedUser', JSON.stringify(response.body));
+      //   cy.visit('http://localhost:3000');
+      // });
+
+      cy.login({ username: 'iamismile', password: 'sekret' });
+    });
+
+    it('A blog can be created', function () {
+      cy.contains('New Blog').click();
+      cy.get('#title').type('Cypress Test');
+      cy.get('#author').type('Test Author');
+      cy.get('#url').type('http://cypress.com');
+      cy.get('#btn-create').click();
+      cy.get('.success').should(
+        'contain',
+        'A new blog "Cypress Test" by Test Author added'
+      );
+    });
+  });
 });

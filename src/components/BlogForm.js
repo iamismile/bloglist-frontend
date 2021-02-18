@@ -25,7 +25,7 @@ function BlogForm({ createBlog }) {
       <div>
         title{' '}
         <input
-          id='title'
+          id="title"
           type="text"
           name="Title"
           value={title}
@@ -35,7 +35,7 @@ function BlogForm({ createBlog }) {
       <div>
         author{' '}
         <input
-          id='author'
+          id="author"
           type="text"
           name="Author"
           value={author}
@@ -45,14 +45,16 @@ function BlogForm({ createBlog }) {
       <div>
         url{' '}
         <input
-          id='url'
+          id="url"
           type="text"
           name="Url"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type="submit">Create</button>
+      <button type="submit" id="btn-create">
+        Create
+      </button>
     </form>
   );
 }
