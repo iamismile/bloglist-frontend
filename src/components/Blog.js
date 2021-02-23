@@ -70,7 +70,11 @@ function Blog({ blog, addLike, removeBlog, user }) {
           <button onClick={() => handleLikes(blog)}>like</button>
         </p>
         <p>{blog.author}</p>
-        <button style={removeButtonStyle} onClick={handleRemove}>
+        <button
+          className="remove-btn"
+          style={removeButtonStyle}
+          onClick={handleRemove}
+        >
           Remove
         </button>
       </div>

@@ -1,12 +1,19 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
-    const user = {
+    const user1 = {
       username: 'iamismile',
       name: 'Ismile Hossain',
       password: 'sekret',
     };
-    cy.request('POST', 'http://localhost:3003/api/users', user);
+    const user2 = {
+      username: 'test',
+      name: 'Anonymous',
+      password: 'test1234',
+    };
+    cy.request('POST', 'http://localhost:3003/api/users', user1);
+    cy.request('POST', 'http://localhost:3003/api/users', user2);
+
     cy.visit('http://localhost:3000');
   });
 
@@ -63,7 +70,7 @@ describe('Blog app', function () {
       );
     });
 
-    describe('When a blog exists', function () {
+    describe.only('When a blog exists', function () {
       beforeEach(function () {
         cy.createBlog({
           title: 'First blog',
@@ -92,6 +99,25 @@ describe('Blog app', function () {
           .find('.likes')
           .find('button')
           .click();
+      });
+
+      it('user who created a blog can delete it', function () {
+        cy.contains('First blog').find('button').click();
+        cy.contains('First blog').parent().find('.remove-btn').click();
+      });
+
+      it('user cant delete others user blog', function () {
+        cy.contains('Logout').click();
+        cy.get('#username').type('test');
+        cy.get('#password').type('test1234');
+        cy.get('#login-button').click();
+        cy.contains('Anonymous is logged-in');
+
+        cy.contains('Second blog').find('button').click();
+        cy.contains('Second blog')
+          .parent()
+          .find('.remove-btn')
+          .should('have.css', 'display', 'none');
       });
     });
   });
