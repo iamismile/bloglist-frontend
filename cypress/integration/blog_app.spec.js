@@ -62,5 +62,37 @@ describe('Blog app', function () {
         'A new blog "Cypress Test" by Test Author added'
       );
     });
+
+    describe('When a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'First blog',
+          author: 'Anonymous 1',
+          url: 'https://google.com',
+          likes: 10,
+        });
+        cy.createBlog({
+          title: 'Second blog',
+          author: 'Anonymous 2',
+          url: 'https://google.com',
+          likes: 20,
+        });
+        cy.createBlog({
+          title: 'Third blog',
+          author: 'Anonymous 3',
+          url: 'https://google.com',
+          likes: 30,
+        });
+      });
+
+      it('user can like a blog', function () {
+        cy.contains('First blog').find('button').click();
+        cy.contains('First blog')
+          .parent()
+          .find('.likes')
+          .find('button')
+          .click();
+      });
+    });
   });
 });
